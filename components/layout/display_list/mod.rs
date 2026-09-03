@@ -491,6 +491,19 @@ impl DisplayListBuilder<'_> {
             clip_chain_id,
             transform_style,
             mix_blend_mode,
+            &Vec::new(),
+            &[], // filter_datas
+            wr::RasterSpace::Screen,
+            stacking_context_flags,
+            None, // snapshot
+        );
+
+        self.wr().push_stacking_context(
+            spatial_id,
+            primitive_flags,
+            clip_chain_id,
+            transform_style,
+            mix_blend_mode,
             &filters,
             &[], // filter_datas
             wr::RasterSpace::Screen,
@@ -740,7 +753,7 @@ impl PaintTraversalHandler for DisplayListBuilder<'_> {
         let (mut stacking_contexts_pushed, old_reference_frame) =
             self.visit_stacking_context_reference_frame_info(stacking_context);
         if self.push_webrender_stacking_context_if_necessary(stacking_context) {
-            stacking_contexts_pushed += 1;
+            stacking_contexts_pushed += 2;
         }
         (stacking_contexts_pushed, old_reference_frame)
     }
