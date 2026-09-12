@@ -2431,10 +2431,11 @@ impl GlobalScope {
         &self.consumed_rejections
     }
 
-    pub(crate) fn module_map(
+    pub(crate) fn with_module_map<T>(
         &self,
-    ) -> &DomRefCell<HashMapTracedValues<ModuleRequest, ModuleStatus>> {
-        &self.module_map
+        f: impl FnOnce(&DomRefCell<HashMapTracedValues<ModuleRequest, ModuleStatus>>) -> T,
+    ) -> T {
+        f(&self.module_map)
     }
 
     pub(crate) fn time(&self, label: DOMString) -> Result<(), ()> {
